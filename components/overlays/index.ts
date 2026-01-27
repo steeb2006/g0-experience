@@ -1,0 +1,1 @@
+export { SmartObjectOverlay } from "./SmartObjectOverlay";
