@@ -204,24 +204,15 @@ export function ChatPanel({ entityName = "co-CFO", className }: ChatPanelProps) 
         // ============================================
 
         // Person detail overlay - "show me [name]", "show Sarah", "Mike", etc. for HR team members
-        else if (entityName === "co-CHRO") {
-          // Check if the message might be asking about a person
-          const mightBePersonQuery =
-            lowerContent.includes("show") ||
-            lowerContent.includes("open") ||
-            lowerContent.includes("tell me about") ||
-            lowerContent.includes("who is") ||
-            lowerContent.includes("profile") ||
-            // Also check for direct name mentions (first names)
-            /\b(sarah|mike|lisa|john|emma|alex|rachel)\b/i.test(lowerContent);
-
-          if (mightBePersonQuery) {
-            const person = getPersonDetailByName(content);
-            if (person) {
-              openPersonDetail(person);
-              addMessage(createResponse(`I've opened **${person.name}**'s profile.\n\n**Quick Overview:**\n- **Title:** ${person.title}\n- **Department:** ${person.department}\n- **Team Size:** ${person.teamSize} people\n- **Engagement:** ${person.engagement}%\n- **Tenure:** ${person.tenure}\n\nYou can see their full profile including skills, certifications, and recent activity in the overlay.`));
-              return;
-            }
+        // Only trigger for explicit person queries, not general HR questions
+        else if (entityName === "co-CHRO" &&
+          (lowerContent.includes("show me") || lowerContent.includes("who is") || lowerContent.includes("profile")) &&
+          /\b(sarah|mike|lisa|john|emma|alex|rachel)\b/i.test(lowerContent)) {
+          const person = getPersonDetailByName(content);
+          if (person) {
+            openPersonDetail(person);
+            addMessage(createResponse(`I've opened **${person.name}**'s profile.\n\n**Quick Overview:**\n- **Title:** ${person.title}\n- **Department:** ${person.department}\n- **Team Size:** ${person.teamSize} people\n- **Engagement:** ${person.engagement}%\n- **Tenure:** ${person.tenure}\n\nYou can see their full profile including skills, certifications, and recent activity in the overlay.`));
+            return;
           }
         }
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Circle, LayoutGrid, Maximize2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,8 +19,9 @@ interface HRDashboardProps {
 }
 
 export function HRDashboard({ className }: HRDashboardProps) {
+  const router = useRouter();
   const { viewMode, setViewMode } = useCanvasStore();
-  const { setCurrentBoard, addToBreadcrumb, currentBoardId } = useNavigationStore();
+  const { setCurrentBoard, addToBreadcrumb, currentBoardId, currentOrgId } = useNavigationStore();
   const [isPresentationMode, setIsPresentationMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -34,6 +36,8 @@ export function HRDashboard({ className }: HRDashboardProps) {
       addToBreadcrumb({ id: currentBoardId, name: currentBoard.name });
     }
     setCurrentBoard(boardId);
+    // Navigate to the sub-board URL
+    router.push(`/${currentOrgId}/ws_hr/${boardId}`);
   };
 
   // Handle Escape key to exit presentation mode
