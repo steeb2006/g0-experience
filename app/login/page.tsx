@@ -24,8 +24,8 @@ function LoginForm() {
 
       if (response.ok) {
         const redirect = searchParams.get("redirect") || "/";
-        router.push(redirect);
-        router.refresh();
+        // Use window.location for hard redirect to ensure cookie is read
+        window.location.href = redirect;
       } else {
         setError("Invalid password");
       }

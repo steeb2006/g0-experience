@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { password } = await request.json();
+    const body = await request.json();
+    console.log("Login attempt, password received:", body.password ? "yes" : "no");
+    const { password } = body;
 
     // Check against environment variable
     const correctPassword = process.env.AUTH_PASSWORD;
@@ -15,6 +17,7 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log("Comparing passwords:", password === correctPassword);
     if (password === correctPassword) {
       const response = NextResponse.json({ success: true });
 
