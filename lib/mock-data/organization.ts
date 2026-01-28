@@ -246,6 +246,33 @@ export const workspaces: Workspace[] = [
       },
     ],
   },
+  {
+    id: "ws_experimental",
+    name: "Experimental",
+    entityOwner: {
+      id: "entity_lab",
+      name: "co-Lab",
+      avatar: "/avatars/lab.png",
+    },
+    boards: [
+      {
+        id: "board_schema_test",
+        name: "Schema Test",
+        icon: "FlaskConical",
+        smartObject: {
+          schemaUri: "g0://smart-objects/client-card@1.0",
+        },
+      },
+      {
+        id: "board_atomic_gallery",
+        name: "Atomic Gallery",
+        icon: "Layers",
+        smartObject: {
+          schemaUri: "g0://smart-objects/atomic-gallery@1.0",
+        },
+      },
+    ],
+  },
 ];
 
 export const defaultWorkspace = workspaces[0];
@@ -291,6 +318,7 @@ export const workspaceColors: Record<string, string> = {
   ws_hr: "#22c55e", // green-500
   ws_sales: "#a855f7", // purple-500
   ws_operations: "#f97316", // orange-500
+  ws_experimental: "#ec4899", // pink-500
 };
 
 export function getWorkspaceColor(workspaceId: string): string {
