@@ -9,7 +9,8 @@ import { Text } from "@/components/smart-objects/atomics";
 import { OrgSwitcher } from "./OrgSwitcher";
 import { WorkspaceTree } from "./WorkspaceTree";
 import { useNavigationStore, useCommandPaletteStore } from "@/lib/stores";
-import { organization, workspaces } from "@/lib/mock-data/organization";
+import { useOrganization, useWorkspaces } from "@/lib/hooks/useConvexData";
+import { organization as mockOrg, workspaces as mockWorkspaces } from "@/lib/mock-data/organization";
 
 interface NavigationDrawerProps {
   className?: string;
@@ -18,6 +19,14 @@ interface NavigationDrawerProps {
 export function NavigationDrawer({ className }: NavigationDrawerProps) {
   const { isDrawerOpen, closeDrawer } = useNavigationStore();
   const { open: openCommandPalette } = useCommandPaletteStore();
+
+  // Fetch from Convex with fallback to mock data
+  const { organization: convexOrg, isLoading: orgLoading } = useOrganization("sns");
+  const { workspaces: convexWorkspaces, isLoading: wsLoading } = useWorkspaces();
+
+  // Use Convex data if available, otherwise fall back to mock
+  const organization = convexOrg || mockOrg;
+  const workspaces = convexWorkspaces.length > 0 ? convexWorkspaces : mockWorkspaces;
 
   // Close on Escape
   const handleKeyDown = useCallback(

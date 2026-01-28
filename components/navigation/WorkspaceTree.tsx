@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils";
 import { Text } from "@/components/smart-objects/atomics";
 import { BoardItem } from "./BoardItem";
 import { useNavigationStore } from "@/lib/stores";
-import type { Workspace } from "@/lib/mock-data/organization";
-import { organization } from "@/lib/mock-data/organization";
+import type { Workspace } from "@/lib/hooks/useConvexData";
+import { useOrganization } from "@/lib/hooks/useConvexData";
+import { organization as mockOrg } from "@/lib/mock-data/organization";
 
 interface WorkspaceTreeProps {
   workspace: Workspace;
@@ -44,6 +45,10 @@ export function WorkspaceTree({ workspace, className }: WorkspaceTreeProps) {
   // Start collapsed (false), then load from localStorage
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+
+  // Get organization from Convex with fallback
+  const { organization: convexOrg } = useOrganization("sns");
+  const organization = convexOrg || mockOrg;
 
   // Load persisted state on mount
   useEffect(() => {

@@ -1,7 +1,8 @@
 "use client";
 
 import { workspaceSummaries } from "@/lib/mock-data/portal";
-import { organization } from "@/lib/mock-data/organization";
+import { useOrganization } from "@/lib/hooks/useConvexData";
+import { organization as mockOrg } from "@/lib/mock-data/organization";
 import { CommandPalette } from "@/components/command-palette/CommandPalette";
 import { PortalHeader } from "./PortalHeader";
 import { TimeGreeting } from "./TimeGreeting";
@@ -15,6 +16,9 @@ import { RecentBoards } from "./RecentBoards";
 import { CrossWorkspaceInsights } from "./CrossWorkspaceInsights";
 
 export function PortalHomepage() {
+  // Get organization from Convex with fallback to mock
+  const { organization: convexOrg } = useOrganization("sns");
+  const organization = convexOrg || mockOrg;
   const orgId = organization.id;
 
   return (
