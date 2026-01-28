@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ConvexClientProvider } from "@/components/providers/ConvexProvider";
+import { KeyboardShortcutsProvider } from "@/components/providers/KeyboardShortcutsProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClientProvider>
+          <KeyboardShortcutsProvider>{children}</KeyboardShortcutsProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );
