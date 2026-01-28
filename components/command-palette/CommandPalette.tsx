@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Command } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -13,13 +14,14 @@ import {
   useCanvasStore,
   type Command as CommandType,
 } from "@/lib/stores";
-import { workspaces } from "@/lib/mock-data/organization";
+import { workspaces, organization } from "@/lib/mock-data/organization";
 
 interface CommandPaletteProps {
   className?: string;
 }
 
 export function CommandPalette({ className }: CommandPaletteProps) {
+  const router = useRouter();
   const {
     isOpen,
     close,
@@ -31,7 +33,7 @@ export function CommandPalette({ className }: CommandPaletteProps) {
     moveDown,
   } = useCommandPaletteStore();
 
-  const { toggleDrawer, setCurrentBoard, closeDrawer, clearBreadcrumb } =
+  const { toggleDrawer, setCurrentBoard, setCurrentWorkspace, closeDrawer, clearBreadcrumb } =
     useNavigationStore();
   const { togglePanel: toggleChat } = useChatStore();
   const { resetZoom } = useCanvasStore();
@@ -50,9 +52,11 @@ export function CommandPalette({ className }: CommandPaletteProps) {
           icon: board.icon || "LayoutDashboard",
           action: () => {
             clearBreadcrumb();
+            setCurrentWorkspace(workspace.id);
             setCurrentBoard(board.id);
             closeDrawer();
             close();
+            router.push(`/${organization.slug}/${workspace.id}/${board.id}`);
           },
         });
 
@@ -65,9 +69,11 @@ export function CommandPalette({ className }: CommandPaletteProps) {
             icon: subBoard.icon || "LayoutDashboard",
             action: () => {
               clearBreadcrumb();
+              setCurrentWorkspace(workspace.id);
               setCurrentBoard(subBoard.id);
               closeDrawer();
               close();
+              router.push(`/${organization.slug}/${workspace.id}/${subBoard.id}`);
             },
           });
         });
@@ -151,12 +157,14 @@ export function CommandPalette({ className }: CommandPaletteProps) {
     return commands;
   }, [
     clearBreadcrumb,
+    setCurrentWorkspace,
     setCurrentBoard,
     closeDrawer,
     close,
     toggleChat,
     toggleDrawer,
     resetZoom,
+    router,
   ]);
 
   // Filter commands based on search
