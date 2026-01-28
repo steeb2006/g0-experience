@@ -75,6 +75,22 @@ export default function BoardPage({ params }: BoardPageProps) {
       return <HRDashboard />;
     }
 
+    // Experimental workspace - placeholder for schema testing
+    if (effectiveWorkspaceId === "ws_experimental") {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[400px] p-8 rounded-2xl border border-dashed border-pink-500/30 bg-pink-500/5">
+          <div className="text-pink-500 text-6xl mb-4">🧪</div>
+          <h2 className="text-2xl font-semibold text-white mb-2">Experimental Board</h2>
+          <p className="text-neutral-400 text-center max-w-md mb-4">
+            This is the sandbox for testing schema-driven Smart Objects.
+          </p>
+          <div className="text-sm text-neutral-500 font-mono bg-neutral-900 px-4 py-2 rounded-lg">
+            Board: {boardId}
+          </div>
+        </div>
+      );
+    }
+
     // Default to Finance dashboard
     return <FinanceKPIDashboard />;
   };
@@ -91,6 +107,9 @@ export default function BoardPage({ params }: BoardPageProps) {
     }
     if (effectiveWorkspaceId === "ws_sales") {
       return "co-CSO";
+    }
+    if (effectiveWorkspaceId === "ws_experimental") {
+      return "co-Lab";
     }
     return "co-CFO";
   };
