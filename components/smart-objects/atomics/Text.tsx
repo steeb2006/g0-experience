@@ -18,8 +18,19 @@ export function Text({
   color = "primary",
   className,
   style,
-  as: Component = "span",
+  as,
 }: TextProps) {
+  // Use semantic elements for headings, span for body text
+  const defaultElement: Record<string, ElementType> = {
+    display: "h1",
+    h1: "h1",
+    h2: "h2",
+    h3: "h3",
+    body: "p",
+    small: "span",
+    mono: "code",
+  };
+  const Component = as || defaultElement[variant] || "span";
   const variantClasses = {
     display: "text-[32px] font-bold tracking-[-0.03em] leading-[1.1]",
     h1: "text-[24px] font-bold tracking-[-0.02em] leading-[1.2]",

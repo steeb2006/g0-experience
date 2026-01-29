@@ -1,0 +1,150 @@
+{
+  "schema": "g0://smart-objects/client-card",
+  "version": "1.0.0",
+  "name": "Client Card",
+  "description": "A compact client profile card showing avatar, name, title, and key metrics.",
+  "composition": {
+    "root": {
+      "type": "Frame",
+      "width": 320,
+      "height": 200,
+      "padding": 24,
+      "background": "var(--g0-bg-elevated-1)",
+      "border": {
+        "color": "var(--g0-bg-elevated-3)",
+        "width": 1,
+        "radius": 16
+      }
+    },
+    "children": [
+      {
+        "id": "avatar",
+        "type": "Avatar",
+        "position": { "x": 24, "y": 24 },
+        "size": { "width": 64, "height": 64 },
+        "binding": "$.client.avatar"
+      },
+      {
+        "id": "name",
+        "type": "Text",
+        "position": { "x": 100, "y": 28 },
+        "style": {
+          "variant": "h2",
+          "color": "primary",
+          "weight": "semibold"
+        },
+        "binding": "$.client.name"
+      },
+      {
+        "id": "title",
+        "type": "Text",
+        "position": { "x": 100, "y": 56 },
+        "style": {
+          "variant": "body",
+          "color": "muted"
+        },
+        "binding": "$.client.title"
+      },
+      {
+        "id": "company",
+        "type": "Badge",
+        "position": { "x": 100, "y": 80 },
+        "style": {
+          "variant": "label",
+          "color": "accent"
+        },
+        "binding": "$.client.company"
+      },
+      {
+        "id": "divider",
+        "type": "Line",
+        "position": { "x": 24, "y": 110 },
+        "size": { "width": 272, "height": 1 },
+        "style": {
+          "stroke": "var(--g0-bg-elevated-3)",
+          "strokeWidth": 1
+        }
+      },
+      {
+        "id": "metrics-container",
+        "type": "Frame",
+        "position": { "x": 24, "y": 124 },
+        "size": { "width": 272, "height": 60 },
+        "children": [
+          {
+            "id": "metric-revenue-label",
+            "type": "Text",
+            "position": { "x": 0, "y": 0 },
+            "style": {
+              "variant": "small",
+              "color": "muted"
+            },
+            "content": "Revenue"
+          },
+          {
+            "id": "metric-revenue-value",
+            "type": "Text",
+            "position": { "x": 0, "y": 20 },
+            "style": {
+              "variant": "h3",
+              "color": "primary",
+              "weight": "bold"
+            },
+            "binding": "$.metrics.revenue"
+          },
+          {
+            "id": "metric-projects-label",
+            "type": "Text",
+            "position": { "x": 100, "y": 0 },
+            "style": {
+              "variant": "small",
+              "color": "muted"
+            },
+            "content": "Projects"
+          },
+          {
+            "id": "metric-projects-value",
+            "type": "Text",
+            "position": { "x": 100, "y": 20 },
+            "style": {
+              "variant": "h3",
+              "color": "primary",
+              "weight": "bold"
+            },
+            "binding": "$.metrics.projects"
+          },
+          {
+            "id": "metric-health-label",
+            "type": "Text",
+            "position": { "x": 180, "y": 0 },
+            "style": {
+              "variant": "small",
+              "color": "muted"
+            },
+            "content": "Health"
+          },
+          {
+            "id": "metric-health-sparkline",
+            "type": "Sparkline",
+            "position": { "x": 180, "y": 16 },
+            "size": { "width": 80, "height": 32 },
+            "binding": "$.metrics.healthTrend"
+          }
+        ]
+      }
+    ]
+  },
+  "sampleData": {
+    "client": {
+      "name": "Maria Schmidt",
+      "title": "VP of Engineering",
+      "company": "TechCorp Inc.",
+      "avatar": "/avatars/maria.jpg"
+    },
+    "metrics": {
+      "revenue": "$2.4M",
+      "projects": "12",
+      "healthTrend": [65, 72, 68, 75, 82, 78, 85, 88, 92, 95]
+    }
+  }
+}

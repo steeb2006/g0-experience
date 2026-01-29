@@ -51,6 +51,54 @@ main     → Production
 3. **Workspaces have entity owners** - boards inherit
 4. **Next.js 16 uses `proxy.ts`** not `middleware.ts`
 
+## Adding New Boards
+
+When creating a new board, update ALL of these files:
+
+1. **`lib/mock-data/organization.ts`** - Add board to workspace's `boards` array (fallback data)
+2. **`convex/seed.ts`** - Add mutation to create board in Convex (this populates the sidebar!)
+3. **`app/[orgId]/[workspaceId]/[boardId]/page.tsx`** - Add routing logic in `renderSmartObject()` to render the component
+4. **`components/smart-objects/index.ts`** - Export the new component (if creating a new dashboard component)
+
+Then run the Convex mutation to add the board:
+```bash
+# In Convex dashboard or via CLI
+npx convex run seed:addMyNewBoard
+```
+
+Example board entry in organization.ts:
+```typescript
+{
+  id: "board_my_dashboard",
+  name: "My Dashboard",
+  icon: "LayoutDashboard",  // Lucide icon name
+  smartObject: {
+    schemaUri: "g0://smart-objects/my-dashboard@1.0",
+  },
+}
+```
+
+Example Convex mutation in seed.ts:
+```typescript
+export const addMyNewBoard = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const workspace = await ctx.db
+      .query("workspaces")
+      .withIndex("by_slug", (q) => q.eq("slug", "ws_experimental"))
+      .first();
+
+    return await ctx.db.insert("boards", {
+      workspaceId: workspace._id,
+      name: "My Dashboard",
+      slug: "board_my_dashboard",
+      smartObjectType: "my-dashboard",
+      createdAt: Date.now(),
+    });
+  },
+});
+```
+
 ## Code Style
 
 - TypeScript strict mode

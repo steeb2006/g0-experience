@@ -1,0 +1,86 @@
+{
+  "schema": "g0://smart-objects/ocean-radar",
+  "version": "1.0.0",
+  "name": "OCEAN Personality Radar",
+  "description": "5-axis radar chart for Big Five personality assessment. Displays Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism scores.",
+  "composition": {
+    "root": {
+      "type": "Frame",
+      "width": 450,
+      "height": 520,
+      "padding": 24,
+      "background": "var(--g0-bg-elevated-1)",
+      "border": {
+        "color": "var(--g0-bg-elevated-3)",
+        "width": 1,
+        "radius": 24
+      }
+    },
+    "children": [
+      {
+        "id": "title",
+        "type": "Text",
+        "position": { "x": 24, "y": 20 },
+        "style": {
+          "variant": "h2",
+          "color": "primary",
+          "weight": "semibold"
+        },
+        "binding": "$.profile.name"
+      },
+      {
+        "id": "subtitle",
+        "type": "Text",
+        "position": { "x": 24, "y": 52 },
+        "style": {
+          "variant": "body",
+          "color": "muted"
+        },
+        "content": "Personality Profile"
+      },
+      {
+        "id": "radar",
+        "type": "RadarChart",
+        "position": { "x": 50, "y": 85 },
+        "size": { "width": 350, "height": 350 },
+        "binding": "$.profile.ocean",
+        "showLabels": true,
+        "showValues": true,
+        "showGrid": true
+      },
+      {
+        "id": "type-label",
+        "type": "Text",
+        "position": { "x": 24, "y": 460 },
+        "style": {
+          "variant": "small",
+          "color": "muted"
+        },
+        "content": "Personality Type"
+      },
+      {
+        "id": "type-badge",
+        "type": "Badge",
+        "position": { "x": 24, "y": 482 },
+        "style": {
+          "variant": "label",
+          "color": "accent"
+        },
+        "binding": "$.profile.type"
+      }
+    ]
+  },
+  "sampleData": {
+    "profile": {
+      "name": "Alex Chen",
+      "type": "The Innovator",
+      "ocean": {
+        "openness": 85,
+        "conscientiousness": 62,
+        "extraversion": 78,
+        "agreeableness": 71,
+        "neuroticism": 35
+      }
+    }
+  }
+}

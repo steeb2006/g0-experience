@@ -150,6 +150,150 @@ export const seedDatabase = mutation({
   },
 });
 
+// Add Experimental workspace (run after initial seed if needed)
+export const addExperimentalWorkspace = mutation({
+  args: {},
+  handler: async (ctx) => {
+    // Check if already exists
+    const existing = await ctx.db
+      .query("workspaces")
+      .withIndex("by_slug", (q) => q.eq("slug", "ws_experimental"))
+      .first();
+
+    if (existing) {
+      return { status: "already_exists", workspaceId: existing._id };
+    }
+
+    // Get the organization
+    const org = await ctx.db
+      .query("organizations")
+      .withIndex("by_slug", (q) => q.eq("slug", "sns"))
+      .first();
+
+    if (!org) {
+      return { status: "error", message: "Organization not found. Run seedDatabase first." };
+    }
+
+    const now = Date.now();
+
+    // Create the Experimental workspace
+    const workspaceId = await ctx.db.insert("workspaces", {
+      organizationId: org._id,
+      name: "Experimental",
+      slug: "ws_experimental",
+      entityOwnerId: "entity_lab",
+      entityName: "co-Lab",
+      icon: "FlaskConical",
+      createdAt: now,
+    });
+
+    // Create the boards
+    const schemaTestId = await ctx.db.insert("boards", {
+      workspaceId,
+      name: "Schema Test",
+      slug: "board_schema_test",
+      smartObjectType: "client-card",
+      createdAt: now,
+    });
+
+    await ctx.db.insert("boards", {
+      workspaceId,
+      name: "Atomic Gallery",
+      slug: "board_atomic_gallery",
+      smartObjectType: "atomic-gallery",
+      createdAt: now,
+    });
+
+    await ctx.db.insert("boards", {
+      workspaceId,
+      name: "OCEAN Radar",
+      slug: "board_ocean_radar",
+      smartObjectType: "ocean-radar",
+      createdAt: now,
+    });
+
+    return { status: "created", workspaceId };
+  },
+});
+
+// Add OCEAN Radar board to Experimental workspace
+export const addOceanRadarBoard = mutation({
+  args: {},
+  handler: async (ctx) => {
+    // Check if already exists
+    const existing = await ctx.db
+      .query("boards")
+      .withIndex("by_slug", (q) => q.eq("slug", "board_ocean_radar"))
+      .first();
+
+    if (existing) {
+      return { status: "already_exists", boardId: existing._id };
+    }
+
+    // Get the Experimental workspace
+    const workspace = await ctx.db
+      .query("workspaces")
+      .withIndex("by_slug", (q) => q.eq("slug", "ws_experimental"))
+      .first();
+
+    if (!workspace) {
+      return { status: "error", message: "Experimental workspace not found. Run addExperimentalWorkspace first." };
+    }
+
+    const now = Date.now();
+
+    // Create the OCEAN Radar board
+    const boardId = await ctx.db.insert("boards", {
+      workspaceId: workspace._id,
+      name: "OCEAN Radar",
+      slug: "board_ocean_radar",
+      smartObjectType: "ocean-radar",
+      createdAt: now,
+    });
+
+    return { status: "created", boardId };
+  },
+});
+
+// Add CEO Dashboard board to Experimental workspace
+export const addCEODashboardBoard = mutation({
+  args: {},
+  handler: async (ctx) => {
+    // Check if already exists
+    const existing = await ctx.db
+      .query("boards")
+      .withIndex("by_slug", (q) => q.eq("slug", "board_ceo_dashboard"))
+      .first();
+
+    if (existing) {
+      return { status: "already_exists", boardId: existing._id };
+    }
+
+    // Get the Experimental workspace
+    const workspace = await ctx.db
+      .query("workspaces")
+      .withIndex("by_slug", (q) => q.eq("slug", "ws_experimental"))
+      .first();
+
+    if (!workspace) {
+      return { status: "error", message: "Experimental workspace not found. Run addExperimentalWorkspace first." };
+    }
+
+    const now = Date.now();
+
+    // Create the CEO Dashboard board
+    const boardId = await ctx.db.insert("boards", {
+      workspaceId: workspace._id,
+      name: "CEO Dashboard",
+      slug: "board_ceo_dashboard",
+      smartObjectType: "ceo-dashboard",
+      createdAt: now,
+    });
+
+    return { status: "created", boardId };
+  },
+});
+
 // Clear all data (useful for re-seeding)
 export const clearDatabase = mutation({
   args: {},

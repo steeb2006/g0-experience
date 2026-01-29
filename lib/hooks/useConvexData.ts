@@ -98,6 +98,10 @@ function getIconFromSmartObjectType(type?: string): string | undefined {
     "customer-expansion": "TrendingUp",
     "process-dashboard": "Workflow",
     "team-overview": "Users",
+    // Experimental workspace
+    "client-card": "FlaskConical",
+    "atomic-gallery": "Layers",
+    "ocean-radar": "Radar",
   };
   return iconMap[type];
 }

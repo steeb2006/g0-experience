@@ -271,6 +271,22 @@ export const workspaces: Workspace[] = [
           schemaUri: "g0://smart-objects/atomic-gallery@1.0",
         },
       },
+      {
+        id: "board_ocean_radar",
+        name: "OCEAN Radar",
+        icon: "Radar",
+        smartObject: {
+          schemaUri: "g0://smart-objects/ocean-radar@1.0",
+        },
+      },
+      {
+        id: "board_ceo_dashboard",
+        name: "CEO Dashboard",
+        icon: "Crown",
+        smartObject: {
+          schemaUri: "g0://smart-objects/ceo-dashboard@1.0",
+        },
+      },
     ],
   },
 ];

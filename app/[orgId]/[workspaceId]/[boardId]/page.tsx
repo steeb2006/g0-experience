@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { G0Canvas } from "@/components/canvas";
 import { WorkspaceZone } from "@/components/canvas/WorkspaceZone";
-import { FinanceKPIDashboard, HRDashboard, ForecastDashboard, LaunchCampaignDashboard, CustomersDashboard, Customer360View, RecruitingDashboard } from "@/components/smart-objects";
+import { FinanceKPIDashboard, HRDashboard, ForecastDashboard, LaunchCampaignDashboard, CustomersDashboard, Customer360View, RecruitingDashboard, SmartObjectRenderer } from "@/components/smart-objects";
+import { CEODashboard } from "@/components/smart-objects/CEODashboard";
+import { AtomicGallery } from "@/components/smart-objects/AtomicGallery";
 import { NavigationDrawer } from "@/components/navigation";
 import { ChatPanel, ChatToggleButton } from "@/components/chat";
 import { CommandPalette } from "@/components/command-palette";
@@ -75,8 +77,53 @@ export default function BoardPage({ params }: BoardPageProps) {
       return <HRDashboard />;
     }
 
-    // Experimental workspace - placeholder for schema testing
+    // Experimental workspace - schema-driven Smart Objects
     if (effectiveWorkspaceId === "ws_experimental") {
+      // Schema Test board - render client-card schema
+      if (boardId === "board_schema_test") {
+        return (
+          <div className="flex flex-col items-center gap-8">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-white mb-2">Schema Test Board</h2>
+              <p className="text-neutral-400 text-sm">
+                Testing schema-driven Smart Object rendering
+              </p>
+            </div>
+            <SmartObjectRenderer
+              schemaUri="g0://smart-objects/client-card@1.0.0"
+            />
+          </div>
+        );
+      }
+
+      // Atomic Gallery - showcase all atomic components
+      if (boardId === "board_atomic_gallery") {
+        return <AtomicGallery />;
+      }
+
+      // OCEAN Radar - personality radar chart
+      if (boardId === "board_ocean_radar") {
+        return (
+          <div className="flex flex-col items-center gap-8">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-white mb-2">OCEAN Personality Radar</h2>
+              <p className="text-neutral-400 text-sm">
+                Big Five personality traits visualization
+              </p>
+            </div>
+            <SmartObjectRenderer
+              schemaUri="g0://smart-objects/ocean-radar@1.0.0"
+            />
+          </div>
+        );
+      }
+
+      // CEO Dashboard - comprehensive executive dashboard
+      if (boardId === "board_ceo_dashboard") {
+        return <CEODashboard />;
+      }
+
+      // Default experimental placeholder
       return (
         <div className="flex flex-col items-center justify-center min-h-[400px] p-8 rounded-2xl border border-dashed border-pink-500/30 bg-pink-500/5">
           <div className="text-pink-500 text-6xl mb-4">🧪</div>
